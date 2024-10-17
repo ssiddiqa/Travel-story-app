@@ -1,0 +1,59 @@
+<div class="container mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold mb-6">Edit Blog Post</h2>
+
+    <!-- Close Button to go back to Manage Stories -->
+    <div class="mb-4">
+        <a href="/manage-stories" class="btn btn-secondary">Back to Manage Stories</a>
+    </div>
+
+    <!-- Display current image if it exists -->
+    <% if (story.imageUrl) { %>
+        <div class="mb-4">
+            <label class="label">
+                <span class="label-text">Current Image:</span>
+            </label>
+            <img src="<%= story.imageUrl %>" alt="Current Image" class="object-cover h-48 w-full rounded-md mb-2">
+        </div>
+        <% } %>
+
+            <form action="/edit-story/<%= story._id %>" method="POST" enctype="multipart/form-data">
+                <div class="form-group mb-4">
+                    <label for="title" class="label">
+                        <span class="label-text">Title:</span>
+                    </label>
+                    <input type="text" id="title" name="title" class="input input-bordered w-full"
+                        value="<%= story.title %>" required>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="visitedLocation" class="label">
+                        <span class="label-text">Visited Location:</span>
+                    </label>
+                    <input type="text" id="visitedLocation" name="visitedLocation" class="input input-bordered w-full"
+                        value="<%= story.visitedLocation %>" required>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="story" class="label">
+                        <span class="label-text">Story:</span>
+                    </label>
+                    <textarea id="story" name="story" class="textarea textarea-bordered w-full" rows="5"
+                        required><%= story.story %></textarea>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label for="image" class="label">
+                        <span class="label-text">Upload New Image (optional):</span>
+                    </label>
+                    <input type="file" id="image" name="image" class="file-input w-full" accept="image/*">
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full mt-4">Update</button>
+            </form>
+
+            <% if (typeof error !=='undefined' ) { %>
+                <div class="alert alert-danger mt-3">
+                    <%= error %>
+                </div>
+                <% } %>
+</div>

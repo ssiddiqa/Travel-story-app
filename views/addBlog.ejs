@@ -1,0 +1,41 @@
+<div class="container mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <h2 class="text-3xl font-bold mb-6 text-center">Add a New Blog</h2>
+    <form action="/add-travel-story" method="POST" enctype="multipart/form-data" class="space-y-4">
+        <div class="form-group">
+            <label for="title" class="label">
+                <span class="label-text">Title:</span>
+            </label>
+            <input type="text" id="title" name="title" class="input input-bordered w-full" required>
+        </div>
+        <div class="form-group">
+            <label for="visitedLocation" class="label">
+                <span class="label-text">Visited Location:</span>
+            </label>
+            <input type="text" id="visitedLocation" name="visitedLocation" class="input input-bordered w-full" required>
+        </div>
+        <div class="form-group">
+            <label for="story" class="label">
+                <span class="label-text">Story:</span>
+            </label>
+            <textarea id="story" name="story" class="textarea textarea-bordered w-full" rows="5" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="image" class="label">
+                <span class="label-text">Upload Image:</span>
+            </label>
+            <div class="flex items-center">
+                <input type="file" id="image" name="image" class="file-input w-full" required>
+            </div>
+        </div>
+        <div class="form-control mt-6">
+            <button type="submit" class="btn btn-primary w-full">Add Blog</button>
+        </div>
+    </form>
+
+    <!-- Display any error message passed from the backend -->
+    <% if (typeof error !=='undefined' ) { %>
+        <div class="alert alert-danger mt-3">
+            <%= error %>
+        </div>
+        <% } %>
+</div>
