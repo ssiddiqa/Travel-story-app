@@ -1,16 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./src/**/*.{html,js}"],
+    content: [
+        "./public/**/*.{html,js}", // Include all HTML and JS files in the public folder
+        "./views/**/*.{ejs,html}", // Include EJS templates in the views folder
+    ],
     theme: {
-        extend: {
-            colors: {
-                primary: "#05B6D3",
-                secondary: "#EF863E",
-            },
-            backgroundImage: {
-                "signup-bg-img": "url('./assets/banner-1.jpg')",
-            }
-        },
+        extend: {},
     },
     plugins: [
         require('daisyui'),

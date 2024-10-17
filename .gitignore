@@ -1,5 +1,15 @@
-# Node.js dependencies
-node_modules
+# Ignore node_modules
+/node_modules
 
-# Environment variables
+# Ignore build output
+/dist
+
+# Ignore logs
+logs
+*.log
+
+# Ignore environment variables
 .env
+
+
+# npm run build:css
