@@ -1,8 +1,8 @@
-<div class="h-screen bg-cyan-50 flex justify-center items-center">
-    <div class="grid grid-cols-2 gap-12 w-full max-w-6xl">
+<div class="h-screen bg-[url('../assets/banner-3.webp')] bg-no-repeat bg-cover flex justify-center items-center ">
+    <div class="grid grid-cols-2 gap-12 w-full max-w-6xl ">
         <div class="relative w-full rounded-2xl">
             <img src="../assets/banner-1.jpg" alt="Travel Inspiration" class="object-cover w-full h-full rounded-2xl">
-            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 rounded-2xl">
+            <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20 rounded-2xl">
                 <h2 class="text-white text-4xl font-bold text-center">Join Us on an Adventure<br />Document Your Travels
                 </h2>
             </div>
@@ -10,33 +10,33 @@
 
         <div class="card bg-base-100 w-full h-full rounded-r-lg shadow-2xl flex flex-col justify-center">
             <form class="card-body p-10" action="/create-account" method="POST">
-                <h3 class="text-2xl font-semibold text-center mb-4">Create Your Account</h3>
+                <h3 class="text-2xl text-sky-600 font-semibold text-center mb-4">Create Your Account</h3>
                 <div class="form-control mb-4">
                     <label class="label">
-                        <span class="label-text">First Name</span>
+                        <span class="label-text text-sky-700">First Name</span>
                     </label>
                     <input type="text" id="fname" class="input input-bordered" name="firstName" required>
                 </div>
                 <div class="form-control mb-4">
                     <label class="label">
-                        <span class="label-text">Last Name</span>
+                        <span class="label-text text-sky-700">Last Name</span>
                     </label>
                     <input type="text" id="sname" class="input input-bordered" name="secondName" required>
                 </div>
                 <div class="form-control mb-4">
                     <label class="label">
-                        <span class="label-text">Email</span>
+                        <span class="label-text text-sky-700">Email</span>
                     </label>
                     <input type="email" id="email" class="input input-bordered" name="email" required>
                 </div>
                 <div class="form-control mb-6">
                     <label class="label">
-                        <span class="label-text">Password</span>
+                        <span class="label-text text-sky-700">Password</span>
                     </label>
                     <input type="password" id="password" class="input input-bordered" name="password" required>
                 </div>
                 <div class="form-control">
-                    <button type="submit" class="btn btn-primary w-full">Sign Up</button>
+                    <button type="submit" class="btn btn-second w-full">Sign Up</button>
                 </div>
             </form>
             <% if (typeof error !=='undefined' ) { %>

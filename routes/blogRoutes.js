@@ -3,7 +3,8 @@ const TravelStory = require("../models/blogModel");
 const { authenticateToken } = require("../middleware/authenticateToken");
 const upload = require("../config/multer");
 const router = express.Router();
-
+const fs = require("fs");
+const path = require('path');
 // Add Travel Story
 router.post("/add-travel-story", authenticateToken, upload.single("image"), async (req, res) => {
     const { title, story, visitedLocation } = req.body;
@@ -41,7 +42,7 @@ router.get("/add-blog", authenticateToken, (req, res) => {
     res.render("addBlog", { title: "Add a New Blog" });
 });
 
-// Get all Travel Stories
+// Get Stories
 router.get("/get-stories", authenticateToken, async (req, res) => {
     const { userId } = req.user;
     try {
@@ -53,23 +54,6 @@ router.get("/get-stories", authenticateToken, async (req, res) => {
     }
 });
 
-// Get method to render the edit story page
-router.get('/edit-story/:id', authenticateToken, async (req, res) => {
-    const { id } = req.params;
-    const { userId } = req.user;
-
-    try {
-        const travelStory = await TravelStory.findOne({ _id: id, userId });
-        if (!travelStory) {
-            return res.status(404).render('error', { message: 'Travel story not found' });
-        }
-
-        res.render('editBlog', { title: 'Edit Blog', story: travelStory });
-    } catch (error) {
-        console.error(error);
-        res.status(500).render('error', { message: 'Server error occurred' });
-    }
-});
 
 // Post method to update a specific story
 router.post('/edit-story/:id', authenticateToken, upload.single("image"), async (req, res) => {
@@ -115,6 +99,25 @@ router.post('/edit-story/:id', authenticateToken, upload.single("image"), async 
 });
 
 
+// Get method to render the edit story page
+router.get('/edit-story/:id', authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.user;
+
+    try {
+        const travelStory = await TravelStory.findOne({ _id: id, userId });
+        if (!travelStory) {
+            return res.status(404).render('error', { message: 'Travel story not found' });
+        }
+
+        res.render('editBlog', { title: 'Edit Blog', story: travelStory });
+    } catch (error) {
+        console.error(error);
+        res.status(500).render('error', { message: 'Server error occurred' });
+    }
+});
+
+
 // Get method to render the manage stories page
 router.get('/manage-stories', authenticateToken, async (req, res) => {
     const { userId } = req.user;
@@ -133,10 +136,11 @@ router.get('/manage-stories', authenticateToken, async (req, res) => {
 
 // Delete Travel Story
 router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
-    const { id } = req.params;
-    const { userId } = req.user;
+    const { id } = req.params; // Extract story ID
+    const { userId } = req.user; // Extract user ID
 
     try {
+        // Check if the travel story exists
         const travelStory = await TravelStory.findOne({ _id: id, userId });
         if (!travelStory) {
             return res.status(404).render('manageStories', {
@@ -145,17 +149,32 @@ router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
             });
         }
 
+        // Attempt to delete the image associated with the travel story
+        const imageUrl = travelStory.imageUrl;
+        if (imageUrl) {
+            const filename = path.basename(imageUrl);
+            const filePath = path.join(__dirname, '../uploads', filename);
+            console.log(`Attempting to delete image at: ${filePath}`); // Log the file path
+
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath); // Delete the image file
+                console.log(`Deleted image: ${filePath}`);
+            } else {
+                console.log(`Image not found: ${filePath}`);
+            }
+        }
+
         // Delete the travel story
         await travelStory.deleteOne();
+        console.log(`Deleted story with ID: ${id}`);
 
         // Redirect to manage stories after successful deletion
         res.redirect('/manage-stories');
     } catch (error) {
-        console.error(error);
-        res.status(500).render('error', { message: 'An error occurred while deleting the story.' });
+        console.error('Error deleting story:', error);
+        res.status(500).render('error', { message: 'An error occurred while deleting the story.', error: error.message });
     }
 });
-
 
 // Get all travel stories (for admin or general viewing purposes)
 router.get("/get-all-stories", authenticateToken, async (req, res) => {
@@ -176,8 +195,6 @@ router.get("/get-all-stories", authenticateToken, async (req, res) => {
         });
     }
 });
-
-
 
 // Fetch and render search results based on the query
 router.get('/search-results', authenticateToken, async (req, res) => {
@@ -217,7 +234,6 @@ router.get('/search-results', authenticateToken, async (req, res) => {
         });
     }
 });
-
 
 
 module.exports = router;

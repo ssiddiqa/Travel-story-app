@@ -1,89 +1,81 @@
 <%- include('./partials/header.ejs') %>
 
-    <div class="container flex gap-4 justify-end mt-4">
-        <form action="/add-blog" method="GET" style="display: inline;">
-            <button type="submit" class="btn btn-primary">Add New Blog Post</button>
-        </form>
-        <form action="/manage-stories" method="GET" style="display: inline;">
-            <button type="submit" class="btn btn-secondary">Manage My Blog Posts</button>
-        </form>
-    </div>
+    <div class="my-5">
+        <div class="container mt-2 px-4">
+            <h2 class="text-3xl font-bold mb-4 text-center"><i>All Travel Stories</i></h2>
 
-    <div class="container mt-2">
-        <h2 class="text-3xl font-bold mb-4">All Travel Stories</h2>
-
-        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <% if (stories.length===0) { %>
-                <p>No stories found.</p>
-                <% } else { %>
-                    <% stories.forEach(story=> { %>
-                        <div class="card bg-base-100 shadow-xl">
-                            <figure>
-                                <img src="<%= story.imageUrl %>" alt="<%= story.title %>"
-                                    class="object-cover h-48 w-full">
-                            </figure>
-                            <div class="card-body">
-                                <h3 class="text-xl font-semibold">
-                                    <%= story.title %>
-                                </h3>
-                                <p><strong>Location Visited:</strong>
-                                    <%= story.visitedLocation %>
-                                </p>
-                                <p class="text-gray-700">
-                                    <%= story.story.substring(0, 100) %>...
-                                </p>
-                                <div class="card-actions justify-end">
-                                    <button class="btn btn-info"
-                                        onclick="showStory('<%= story.title %>', '<%= story.visitedLocation %>', `<%=story.story %>`, '<%= story.imageUrl %>')">Read
-                                        More</button>
+            <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <% if (stories.length===0) { %>
+                    <p>No stories found.</p>
+                    <% } else { %>
+                        <% stories.forEach(story=> { %>
+                            <div class="card bg-base-100 shadow-xl">
+                                <figure>
+                                    <img src="<%= story.imageUrl %>" alt="<%= story.title %>"
+                                        class="object-cover h-48 w-full">
+                                </figure>
+                                <div class="card-body">
+                                    <h3 class="text-xl font-semibold">
+                                        <%= story.title %>
+                                    </h3>
+                                    <p><strong>Location Visited:</strong>
+                                        <%= story.visitedLocation %>
+                                    </p>
+                                    <p class="text-gray-700">
+                                        <%= story.story.substring(0, 100) %>...
+                                    </p>
+                                    <div class="card-actions justify-end">
+                                        <button class="btn btn-second"
+                                            onclick="showStory(`<%= story.title %>`, `<%= story.visitedLocation %>`, `<%=story.story %>`, `<%= story.imageUrl %>`)">Read
+                                            More</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <% }); %>
-                            <% } %>
+                            <% }); %>
+                                <% } %>
+            </div>
         </div>
+
+        <!-- Modal Structure -->
+
+        <dialog id="storyModal" class="modal">
+            <div class="modal-box w-full max-w-3xl"> <!-- Set a larger max-width -->
+                <div class="modal-header flex justify-between items-center p-4 border-b">
+                    <h5 class="modal-title text-lg font-bold" id="modal-title"></h5>
+                    <button type="button" class="btn btn-sm btn-circle btn-red" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="border-b"><img id="modal-image" class="img-fluid rounded-lg mt-4" alt="Story Image"
+                            style="max-width: 100%;"></div>
+                    <div class="my-3 border-b py-3">
+                        <p><strong>Location Visited:</strong> <span id="modal-location"></span></p>
+                    </div>
+                    <p id="modal-story" style="white-space: pre-line;"></p> <!-- Preserve line breaks -->
+                </div>
+                <div class="modal-footer p-4 flex justify-end">
+                    <button type="button" class="btn btn-main" onclick="closeModal()">Close</button>
+                </div>
+            </div>
+        </dialog>
     </div>
+    <%- include('./partials/footer.ejs') %>
+        <script>
+            function showStory(title, location, story, imageUrl) {
+                document.getElementById('modal-title').innerText = title;
+                document.getElementById('modal-location').innerText = location;
+                document.getElementById('modal-story').innerText = story;
+                document.getElementById('modal-image').src = imageUrl;
 
-    <!-- Modal Structure -->
+                const modal = document.getElementById('storyModal');
+                modal.showModal(); // Open the dialog
+            }
 
-    <dialog id="storyModal" class="modal">
-        <div class="modal-box w-full max-w-3xl"> <!-- Set a larger max-width -->
-            <div class="modal-header flex justify-between items-center p-4 border-b">
-                <h5 class="modal-title text-lg font-bold" id="modal-title"></h5>
-                <button type="button" class="btn btn-sm btn-circle btn-ghost" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body p-4">
-                <p><strong>Location Visited:</strong> <span id="modal-location"></span></p>
-                <p id="modal-story" style="white-space: pre-line;"></p> <!-- Preserve line breaks -->
-                <img id="modal-image" class="img-fluid rounded-lg mt-4" alt="Story Image" style="max-width: 100%;">
-            </div>
-            <div class="modal-footer p-4">
-                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
-            </div>
-        </div>
-    </dialog>
+            function closeModal() {
+                const modal = document.getElementById('storyModal');
+                modal.close(); // Close the dialog
+            }
 
-
-    <script>
-        function showStory(title, location, story, imageUrl) {
-            document.getElementById('modal-title').innerText = title;
-            document.getElementById('modal-location').innerText = location;
-            document.getElementById('modal-story').innerText = story;
-            document.getElementById('modal-image').src = imageUrl;
-
-            const modal = document.getElementById('storyModal');
-            modal.showModal(); // Open the dialog
-        }
-
-        function closeModal() {
-            const modal = document.getElementById('storyModal');
-            modal.close(); // Close the dialog
-        }
-
-        // Ensure the search form resets correctly
-        document.getElementById('search-form').addEventListener('submit', function () {
-            setTimeout(function () {
+            document.getElementById('search-form').addEventListener('submit', function () {
                 document.getElementById('search-form').reset();
-            }, 100);
-        });
-    </script>
+            });
+        </script>

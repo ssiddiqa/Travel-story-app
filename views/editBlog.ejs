@@ -3,7 +3,7 @@
 
     <!-- Close Button to go back to Manage Stories -->
     <div class="mb-4">
-        <a href="/manage-stories" class="btn btn-secondary">Back to Manage Stories</a>
+        <a href="/manage-stories" class="btn btn-second">Back to Manage Stories</a>
     </div>
 
     <!-- Display current image if it exists -->
@@ -45,10 +45,15 @@
                     <label for="image" class="label">
                         <span class="label-text">Upload New Image (optional):</span>
                     </label>
-                    <input type="file" id="image" name="image" class="file-input w-full" accept="image/*">
+                    <input type="file" id="image" name="image" class="block w-full text-sm text-slate-500
+      file:mr-4 file:py-2 file:px-4
+       file:border-blue-300 file:rounded-lg
+      file:text-sm file:font-semibold
+      file:bg-blue-50 file:text-blue-700
+      hover:file:bg-blue-100" accept="image/*">
                 </div>
 
-                <button type="submit" class="btn btn-primary w-full mt-4">Update</button>
+                <button type="submit" class="btn btn-main w-full mt-4">Update</button>
             </form>
 
             <% if (typeof error !=='undefined' ) { %>

@@ -1,11 +1,13 @@
-<div class="container mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
-    <h2 class="text-3xl font-bold mb-4">Manage My Blog Posts</h2>
+<div class="container mx-auto p-6 bg-white ">
+    <div class="flex justify-between items-center mb-3">
+        <h2 class="text-3xl font-bold mb-4">Manage My Blog Posts</h2>
 
-    <!-- Back to Dashboard Button -->
-    <div class="mb-4">
-        <form action="/dashboard" method="GET" style="display: inline;">
-            <button type="submit" class="btn btn-secondary">Back to Dashboard</button>
-        </form>
+        <!-- Back to Dashboard Button -->
+        <div class="mb-4">
+            <form action="/dashboard" method="GET" style="display: inline;">
+                <button type="submit" class="btn btn-second">Back to Dashboard</button>
+            </form>
+        </div>
     </div>
 
     <div id="stories-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -30,10 +32,11 @@
                             </p>
                             <div class="flex justify-end space-x-2">
                                 <form action="/edit-story/<%= story._id %>" method="GET">
-                                    <button type="submit" class="btn btn-warning">Edit</button>
+                                    <button type="submit" class="btn btn-main">Edit</button>
                                 </form>
-                                <form action="/delete-story/<%= story._id %>?_method=DELETE" method="POST">
-                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                <form action="/delete-story/<%= story._id %>?_method=DELETE" method="POST"
+                                    style="display: inline;">
+                                    <button type="submit" class="btn btn-red">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -41,4 +44,5 @@
                     <% }); %>
                         <% } %>
     </div>
+
 </div>
