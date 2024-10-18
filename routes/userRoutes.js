@@ -44,11 +44,11 @@ router.post("/create-account", async (req, res) => {
         const accessToken = jwt.sign(
             { userId: user._id },
             process.env.ACCESS_TOKEN_SECRET,
-            { expiresIn: "72h" }
+            { expiresIn: "24h" }
         );
 
         // Set the token as an HttpOnly cookie
-        res.cookie('token', accessToken, { httpOnly: true, maxAge: 72 * 60 * 60 * 1000 });
+        res.cookie('token', accessToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
 
         // Redirect to dashboard
         return res.redirect('/dashboard');

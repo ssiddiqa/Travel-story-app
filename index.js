@@ -7,7 +7,6 @@ const blogRoutes = require("./routes/blogRoutes");
 const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts')
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
 const jwt = require('jsonwebtoken');
 
 db_connection();
@@ -28,8 +27,7 @@ app.use(expressLayouts);
 // Set the default layout file to 'main.ejs'
 app.set('layout', 'layouts/main');
 
-// Allow cross-origin requests
-app.use(cors({ origin: "*" }));
+
 //API routes
 app.use("", userRoutes);
 app.use("", blogRoutes);
@@ -47,7 +45,7 @@ app.get("/", (req, res) => {
             if (err) {
                 // If token is invalid or expired, render the homepage
                 console.error('Invalid token:', err);
-                return res.render('index', { title: 'Home Page' });
+                return res.render('index');
             }
 
             // If token is valid, redirect to the dashboard

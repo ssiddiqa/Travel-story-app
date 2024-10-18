@@ -3,7 +3,6 @@ const TravelStory = require("../models/blogModel");
 const { authenticateToken } = require("../middleware/authenticateToken");
 const upload = require("../config/multer");
 const router = express.Router();
-const fs = require("fs");
 const path = require('path');
 // Add Travel Story
 router.post('/add-travel-story', authenticateToken, upload.single('image'), async (req, res) => {
@@ -125,7 +124,6 @@ router.get('/manage-stories', authenticateToken, async (req, res) => {
 });
 
 // Delete Travel Story
-// Delete Travel Story
 router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
     const { id } = req.params; // Extract story ID
     const { userId } = req.user; // Extract user ID
@@ -139,8 +137,6 @@ router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
                 error: 'Travel story not found',
             });
         }
-
-
         // Delete the travel story
         await travelStory.deleteOne();
         // console.log(`Deleted story with ID: ${id}`);
@@ -156,15 +152,6 @@ router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
 // Fetch and render search results based on the query
 router.get('/search-results', authenticateToken, async (req, res) => {
     const { query } = req.query;
-
-    if (!query) {
-        return res.render('searchResults', {
-            title: 'Search Results',
-            stories: [],
-            query: ''
-        });
-    }
-
     try {
         // Fetch stories matching the search criteria
         const results = await TravelStory.find({
