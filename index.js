@@ -3,7 +3,6 @@ const path = require('path');
 const express = require("express");
 const db_connection = require('./config/db_config');
 const userRoutes = require("./routes/userRoutes");
-const imageRoutes = require("./routes/imageRoutes");
 const blogRoutes = require("./routes/blogRoutes");
 const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts')
@@ -33,9 +32,7 @@ app.set('layout', 'layouts/main');
 app.use(cors({ origin: "*" }));
 //API routes
 app.use("", userRoutes);
-app.use("", imageRoutes);
 app.use("", blogRoutes);
-app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use("/assets", express.static(__dirname + "/assets"));
 app.use("/public", express.static(__dirname + "/public"));
 

@@ -1,14 +1,18 @@
+// models/blogModel.js
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoosePaginate = require('mongoose-paginate-v2');
 
-const travelStorySchema = new Schema({
-    title: { type: String, required: true },
-    story: { type: String, required: true },
-    visitedLocation: { type: String, default: [] },
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    createdOn: { type: Date, default: Date.now },
-    imageUrl: { type: String, required: true },
+const travelStorySchema = new mongoose.Schema({
+    title: String,
+    story: String,
+    visitedLocation: String,
+    userId: mongoose.Schema.Types.ObjectId,
+    imageUrl: String,
+    createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("TravelStory", travelStorySchema);
+// Add pagination plugin
+travelStorySchema.plugin(mongoosePaginate);
 
+const TravelStory = mongoose.model('TravelStory', travelStorySchema);
+module.exports = TravelStory;

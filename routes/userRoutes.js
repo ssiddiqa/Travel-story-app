@@ -113,21 +113,28 @@ router.get('/signin', (req, res) => {
 // Dashboard Route
 router.get('/dashboard', authenticateToken, async (req, res) => {
     try {
-
         // Fetch the user based on userId
         const user = await User.findById(req.user.userId);
         if (!user) {
             return res.status(404).json({ message: "User not found." });
         }
 
-        // Fetch all travel stories from the database
-        const allStories = await TravelStory.find().sort({ createdAt: -1 });
+        // Pagination setup
+        const page = parseInt(req.query.page) || 1; // Current page number from the query string
+        const limit = 9; // Number of stories per page
+        const skip = (page - 1) * limit; // Calculate how many stories to skip
+
+        // Fetch stories with pagination
+        const totalStories = await TravelStory.countDocuments(); // Total number of stories
+        const stories = await TravelStory.find().sort({ createdAt: -1 }).skip(skip).limit(limit);
 
         // Render the dashboard and pass the user and stories data
         res.render('dashboard', {
             title: 'Dashboard',
             user: user, // Pass the full user object
-            stories: allStories // Pass the fetched stories to the template
+            stories: stories, // Pass the fetched stories to the template
+            currentPage: page,
+            totalPages: Math.ceil(totalStories / limit), // Total pages calculated
         });
     } catch (error) {
         console.error("Error fetching stories for dashboard:", error);

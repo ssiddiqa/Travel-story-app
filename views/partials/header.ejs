@@ -6,6 +6,7 @@
         </div>
 
         <div class="flex items-center space-x-4">
+            <!-- Search Form -->
             <form action="/search-results" method="GET" class="flex items-center">
                 <input type="text" name="query" class="input input-bordered" placeholder="Search stories..." required>
                 <button type="submit" id="search-form" class="btn btn-main ml-2">Search</button>
@@ -35,7 +36,7 @@
                 </div>
             </div>
 
-            <!-- Navigation Links -->
+            <!-- Log Out Button -->
             <form action="/logout" method="POST" style="display: inline;">
                 <button type="submit" class="btn btn-second">Log Out</button>
             </form>
@@ -44,11 +45,12 @@
 </nav>
 
 <script>
-    // Ensure the search form resets correctly
+    // Reset search form on submit
     document.getElementById('search-form').addEventListener('submit', function () {
-        document.getElementById('search-form').reset();
+        this.reset();
     });
-    // Dropdown toggle
+
+    // Dropdown toggle functionality
     const dropdownButton = document.getElementById('dropdownButton');
     const dropdownMenu = document.getElementById('dropdownMenu');
 

@@ -15,6 +15,18 @@
     @apply bg-red-200 text-red-700 border-red-600 hover:bg-red-600 hover:text-white;
 }
 
-.input-box {
-    @apply w-full text-sm bg-cyan-600/5 rounded px-5 py-3 mb-4 outline-cyan-300 shadow-sm;
+/* Add active and secondary button styles */
+.btn-active {
+    @apply bg-cyan-600 text-white border-cyan-600;
+    /* Active button styles */
+}
+
+.btn-secondary {
+    @apply bg-gray-200 text-gray-800;
+    /* Inactive button styles */
+}
+
+.btn-secondary:hover {
+    @apply bg-gray-300;
+    /* Hover effect for inactive buttons */
 }
