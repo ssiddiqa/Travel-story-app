@@ -136,68 +136,6 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
 });
 
 
-// Logout Route - Clear the token cookie
-router.get('/logout', (req, res) => {
-    // Clear the token cookie by setting it to an empty value with immediate expiration
-    res.clearCookie('token');
-    res.status(200).json({ message: 'Logout successful' });
-});
-// Route to get user info
-router.get("/get-user", authenticateToken, async (req, res) => {
-    try {
-        const { userId } = req.user; // req.user is set by authenticateToken middleware
-
-        // Find the user in the database by ID
-        const isUser = await User.findById(userId);
-
-        // Check if the user exists
-        if (!isUser) {
-            return res.status(401).json({ message: "User not found or unauthorized." });
-        }
-
-        // Return user data (ensure sensitive data like password is not sent)
-        return res.json({
-            user: {
-                firstName: isUser.firstName,
-                secondName: isUser.secondName,
-                email: isUser.email,
-                // Add any other non-sensitive fields you'd like to return
-            },
-            message: "User data retrieved successfully."
-        });
-    } catch (error) {
-        console.error("Error retrieving user:", error);
-        return res.status(500).json({ message: "Server error." });
-    }
-});
-
-// Route to get all users
-router.get("/get-all-users", authenticateToken, async (req, res) => {
-    try {
-        // Find all users, exclude sensitive fields like password
-        const users = await User.find({}, { password: 0 });
-
-        // Check if there are users
-        if (!users || users.length === 0) {
-            return res.status(404).json({ message: "No users found." });
-        }
-
-        // Return the list of users
-        return res.json({
-            users: users.map(user => ({
-                firstName: user.firstName,
-                secondName: user.secondName,
-                email: user.email,
-                // Add any other fields you want to return, like role or profile info
-            })),
-            message: "Users retrieved successfully."
-        });
-    } catch (error) {
-        console.error("Error retrieving users:", error);
-        return res.status(500).json({ message: "Server error." });
-    }
-});
-
 // Logout Route
 router.post('/logout', (req, res) => {
     // Clear the cookie containing the token

@@ -42,18 +42,6 @@ router.get("/add-blog", authenticateToken, (req, res) => {
     res.render("addBlog", { title: "Add a New Blog" });
 });
 
-// Get Stories
-router.get("/get-stories", authenticateToken, async (req, res) => {
-    const { userId } = req.user;
-    try {
-        const travelStories = await TravelStory.find({ userId }).sort({ isFavourite: -1 });
-        res.status(200).json({ stories: travelStories });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: true, message: error.message });
-    }
-});
-
 
 // Post method to update a specific story
 router.post('/edit-story/:id', authenticateToken, upload.single("image"), async (req, res) => {
@@ -176,25 +164,6 @@ router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
     }
 });
 
-// Get all travel stories (for admin or general viewing purposes)
-router.get("/get-all-stories", authenticateToken, async (req, res) => {
-    try {
-        // Find all stories in the TravelStory collection
-        const allStories = await TravelStory.find().sort({ createdAt: -1 }); // Sort by newest first, if needed
-
-        // Return the list of stories
-        res.status(200).json({
-            stories: allStories,
-            message: "All stories retrieved successfully"
-        });
-    } catch (error) {
-        console.error("Error fetching all stories:", error);
-        res.status(500).json({
-            error: true,
-            message: "Error retrieving stories"
-        });
-    }
-});
 
 // Fetch and render search results based on the query
 router.get('/search-results', authenticateToken, async (req, res) => {

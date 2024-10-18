@@ -9,6 +9,7 @@ const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts')
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 
 db_connection();
 
@@ -38,9 +39,27 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.use("/assets", express.static(__dirname + "/assets"));
 app.use("/public", express.static(__dirname + "/public"));
 
-// Test API endpoint
+// Root route
 app.get("/", (req, res) => {
-    res.render('index', { title: 'Home Page' });  // Pass optional variables like title
+    // Get the token from cookies
+    const token = req.cookies.token;
+
+    // If token exists, verify it
+    if (token) {
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            if (err) {
+                // If token is invalid or expired, render the homepage
+                console.error('Invalid token:', err);
+                return res.render('index', { title: 'Home Page' });
+            }
+
+            // If token is valid, redirect to the dashboard
+            return res.redirect('/dashboard');
+        });
+    } else {
+        // If no token, render the homepage
+        res.render('index', { title: 'Home Page' });
+    }
 });
 
 const PORT = process.env.PORT || 8000;
