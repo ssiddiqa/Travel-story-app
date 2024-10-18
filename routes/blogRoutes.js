@@ -125,6 +125,7 @@ router.get('/manage-stories', authenticateToken, async (req, res) => {
 });
 
 // Delete Travel Story
+// Delete Travel Story
 router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
     const { id } = req.params; // Extract story ID
     const { userId } = req.user; // Extract user ID
@@ -139,24 +140,10 @@ router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
             });
         }
 
-        // Attempt to delete the image associated with the travel story
-        const imageUrl = travelStory.imageUrl;
-        if (imageUrl) {
-            const filename = path.basename(imageUrl);
-            const filePath = path.join(__dirname, '../uploads', filename);
-            // console.log(`Attempting to delete image at: ${filePath}`); // Log the file path
-
-            if (fs.existsSync(filePath)) {
-                fs.unlinkSync(filePath); // Delete the image file
-                // console.log(`Deleted image: ${filePath}`);
-            } else {
-                // console.log(`Image not found: ${filePath}`);
-            }
-        }
 
         // Delete the travel story
         await travelStory.deleteOne();
-        console.log(`Deleted story with ID: ${id}`);
+        // console.log(`Deleted story with ID: ${id}`);
 
         // Redirect to manage stories after successful deletion
         res.redirect('/manage-stories');
@@ -165,7 +152,6 @@ router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
         res.status(500).render('error', { message: 'An error occurred while deleting the story.', error: error.message });
     }
 });
-
 
 // Fetch and render search results based on the query
 router.get('/search-results', authenticateToken, async (req, res) => {
