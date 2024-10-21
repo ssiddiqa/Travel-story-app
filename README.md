@@ -34,51 +34,79 @@ Follow these steps to set up the project locally:
 ```bash
 git clone https://github.com/your-username/travel-blog.git
 cd travel-blog
+```
 
+### 2. Install Dependencies
 
-2. Install Dependencies
+```bash
 npm install
+```
 
-3. Configure Environment Variables
+### 3. Configure Environment Variables
+
+Create a `.env` file in the root directory and add the following environment variables:
+
+```plaintext
 PORT=8000
 MONGODB_URI=your_mongodb_connection_string
 ACCESS_TOKEN_SECRET=your_jwt_secret
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+```
 
-4. Run the Application
+Replace the placeholder values with your actual configuration.
+
+### 4. Run the Application
+
 Start the development server:
-npm start
-The application will be running at http://localhost:8000.
 
-Key Features
-1. User Authentication
-Securely create an account, log in, and log out.
-Passwords are hashed using bcrypt.
-2. Blog Management
-Users can add new travel stories, edit existing ones, and delete their stories.
-Supports image uploads using Cloudinary.
-3. Save and Unsave Favorite Stories
-Users can save their favorite stories from the dashboard.
-Saved stories are accessible on a separate "Saved Stories" page.
-4. Search and Pagination
-Search stories by title, location, or content.
-Paginated views for managing and viewing stories.
-Contributing
+```bash
+npm start
+```
+
+The application will be running at [http://localhost:8000](http://localhost:8000).
+
+## Key Features
+
+### 1. User Authentication
+
+- Securely create an account, log in, and log out.
+- Passwords are hashed using bcrypt for security.
+
+### 2. Blog Management
+
+- Users can add new travel stories, edit existing ones, and delete their stories.
+- Supports image uploads using Cloudinary for storing and serving images.
+
+### 3. Save and Unsave Favorite Stories
+
+- Users can save their favorite stories from the dashboard.
+- Saved stories are accessible on a separate "Saved Stories" page.
+- The save/unsave button dynamically updates based on the story's saved status.
+
+### 4. Search and Pagination
+
+- Search for stories by title, location, or content.
+- Paginated views for managing and viewing stories.
+
+## Contributing
+
 If you'd like to contribute to the project, follow these steps:
 
-Fork the repository.
-Create a new branch (git checkout -b feature-branch).
-Make your changes.
-Commit the changes (git commit -m "Add some feature").
-Push to the branch (git push origin feature-branch).
-Create a new Pull Request.
+1. **Fork the repository.**
+2. **Create a new branch** (`git checkout -b feature-branch`).
+3. **Make your changes.**
+4. **Commit the changes** (`git commit -m "Add some feature"`).
+5. **Push to the branch** (`git push origin feature-branch`).
+6. **Create a new Pull Request.**
+
+## Acknowledgements
+
+- [Node.js](https://nodejs.org/)
+- [Express](https://expressjs.com/)
+- [MongoDB](https://www.mongodb.com/)
+- [Cloudinary](https://cloudinary.com/)
+- [Tailwind CSS](https://tailwindcss.com/)
 
 
-Acknowledgements
-Node.js
-Express
-MongoDB
-Cloudinary
-Tailwind CSS
