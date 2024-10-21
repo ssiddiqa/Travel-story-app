@@ -1,14 +1,18 @@
-<div class="h-screen bg-cyan-50 bg-no-repeat bg-cover flex justify-center items-center">
-    <div class="grid grid-cols-2 gap-12 w-full max-w-6xl">
+<div class="min-h-screen bg-cyan-50 bg-no-repeat bg-cover flex justify-center items-center px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 w-full max-w-6xl">
+        <!-- Image Section -->
         <div class="relative w-full rounded-2xl">
-            <img src="../assets/banner-2.webp" alt="Travel Inspiration" class="object-cover w-full h-full rounded-2xl">
+            <img src="../assets/banner-2.webp" alt="Travel Inspiration"
+                class="object-cover w-full h-64 lg:h-full rounded-2xl">
             <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 rounded-2xl">
-                <h2 class="text-white text-4xl font-bold text-center">Welcome Back!<br />Log in to Continue</h2>
+                <h2 class="text-white text-2xl lg:text-4xl font-bold text-center">Welcome Back!<br />Log in to Continue
+                </h2>
             </div>
         </div>
 
-        <div class="card bg-base-100 w-full h-full rounded-r-lg shadow-2xl flex flex-col justify-center">
-            <form class="card-body p-10" action="/login" method="POST">
+        <!-- Form Section -->
+        <div class="card bg-base-100 w-full h-full rounded-lg shadow-2xl flex flex-col justify-center">
+            <form class="card-body p-6 lg:p-10" action="/login" method="POST">
                 <h3 class="text-2xl font-semibold text-center mb-4">Sign In</h3>
                 <div class="form-control mb-4">
                     <label class="label">
@@ -23,7 +27,7 @@
                     <input type="password" id="password" class="input input-bordered" name="password" required>
                 </div>
                 <div class="form-control mt-6">
-                    <button type="submit" class="btn btn-second">Sign In</button>
+                    <button type="submit" class="btn btn-second w-full">Sign In</button>
                 </div>
             </form>
             <% if (typeof error !=='undefined' ) { %>
