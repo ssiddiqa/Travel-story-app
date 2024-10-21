@@ -1,4 +1,4 @@
-<div class="container mx-auto p-6 bg-white ">
+<div class="container mx-auto p-6 bg-white">
     <div class="flex justify-between items-center mb-3">
         <h2 class="text-3xl font-bold mb-4">My Blogs</h2>
 
@@ -27,7 +27,7 @@
                             <p class="text-sm text-gray-600"><strong>Location Visited:</strong>
                                 <%= story.visitedLocation %>
                             </p>
-                            <p class="text-gray-700 mb-4">
+                            <p class="gray-700 mb-4">
                                 <%= story.story.substring(0, 100) %>...
                             </p>
                             <div class="flex justify-end space-x-2">
@@ -45,4 +45,19 @@
                         <% } %>
     </div>
 
+    <!-- Pagination Controls -->
+    <div class="flex justify-center mt-6">
+        <% if (currentPage> 1) { %>
+            <a href="/manage-stories?page=<%= currentPage - 1 %>" class="btn btn-main mr-2">Previous</a>
+            <% } %>
+                <% for (let i=1; i <=totalPages; i++) { %>
+                    <a href="/manage-stories?page=<%= i %>"
+                        class="btn <%= currentPage === i ? 'btn-active' : 'btn-secondary' %> mx-1">
+                        <%= i %>
+                    </a>
+                    <% } %>
+                        <% if (currentPage < totalPages) { %>
+                            <a href="/manage-stories?page=<%= currentPage + 1 %>" class="btn btn-main ml-2">Next</a>
+                            <% } %>
+    </div>
 </div>

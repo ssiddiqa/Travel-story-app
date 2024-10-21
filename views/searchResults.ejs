@@ -7,6 +7,7 @@
             <button type="submit" class="btn btn-main">Dashboard</button>
         </form>
     </div>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <% if (stories.length===0) { %>
             <p class="text-center text-gray-500">No stories found matching your search criteria.</p>
@@ -28,7 +29,7 @@
                             </p>
                             <div class="card-actions justify-end">
                                 <button class="btn btn-second"
-                                    onclick="showStory(`<%= story.title %>`, `<%= story.visitedLocation %>`, `<%=story.story %>`, `<%= story.imageUrl %>`)">Read
+                                    onclick="showStory(`<%= story.title %>`, `<%= story.visitedLocation %>`, `<%= story.story %>`, `<%= story.imageUrl %>`)">Read
                                     More</button>
                             </div>
                         </div>
@@ -37,28 +38,47 @@
                         <% } %>
     </div>
 
+    <!-- Pagination Controls -->
+    <div class="flex justify-center mt-6">
+        <% if (currentPage> 1) { %>
+            <a href="/search-results?page=<%= currentPage - 1 %>&query=<%= query %>"
+                class="btn btn-main mr-2">Previous</a>
+            <% } %>
+                <% for (let i=1; i <=totalPages; i++) { %>
+                    <a href="/search-results?page=<%= i %>&query=<%= query %>"
+                        class="btn <%= currentPage === i ? 'btn-active' : 'btn-secondary' %> mx-1">
+                        <%= i %>
+                    </a>
+                    <% } %>
+                        <% if (currentPage < totalPages) { %>
+                            <a href="/search-results?page=<%= currentPage + 1 %>&query=<%= query %>"
+                                class="btn btn-main ml-2">Next</a>
+                            <% } %>
+    </div>
+
     <!-- Modal Structure -->
     <dialog id="storyModal" class="modal">
-        <div class="modal-box w-full max-w-3xl"> <!-- Set a larger max-width -->
+        <div class="modal-box w-full max-w-3xl">
             <div class="modal-header flex justify-between items-center p-4 border-b">
                 <h5 class="modal-title text-lg font-bold" id="modal-title"></h5>
                 <button type="button" class="btn btn-sm btn-circle btn-red" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body p-4">
-                <div class="border-b"><img id="modal-image" class="img-fluid rounded-lg mt-4" alt="Story Image"
-                        style="max-width: 100%;"></div>
+                <div class="border-b">
+                    <img id="modal-image" class="img-fluid rounded-lg mt-4" alt="Story Image" style="max-width: 100%;">
+                </div>
                 <div class="my-3 border-b py-3">
                     <p><strong>Location Visited:</strong> <span id="modal-location"></span></p>
                 </div>
-                <p id="modal-story" style="white-space: pre-line;"></p> <!-- Preserve line breaks -->
+                <p id="modal-story" style="white-space: pre-line;"></p>
             </div>
             <div class="modal-footer p-4 flex justify-end">
                 <button type="button" class="btn btn-main" onclick="closeModal()">Close</button>
             </div>
         </div>
     </dialog>
-
 </div>
+
 <script>
     function showStory(title, location, story, imageUrl) {
         document.getElementById('modal-title').innerText = title;

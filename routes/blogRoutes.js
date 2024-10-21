@@ -110,18 +110,29 @@ router.get('/edit-story/:id', authenticateToken, async (req, res) => {
 // Get method to render the manage stories page
 router.get('/manage-stories', authenticateToken, async (req, res) => {
     const { userId } = req.user;
+    const page = parseInt(req.query.page) || 1; // Get current page or default to 1
+    const limit = 9; // Number of stories per page
+    const skip = (page - 1) * limit; // Calculate skip value for pagination
 
     try {
-        // Find all stories created by the authenticated user
-        const stories = await TravelStory.find({ userId }).sort({ createdAt: -1 });
+        // Find all stories created by the authenticated user with pagination
+        const stories = await TravelStory.find({ userId })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
 
-        // Render the manageStories view and pass the fetched stories to the template
-        res.render('manageStories', { title: 'Manage Stories', stories });
+        // Get the total number of stories to calculate total pages
+        const totalStories = await TravelStory.countDocuments({ userId });
+        const totalPages = Math.ceil(totalStories / limit); // Total pages calculation
+
+        // Render the manageStories view and pass the fetched stories and pagination info to the template
+        res.render('manageStories', { title: 'Manage Stories', stories, totalPages, currentPage: page });
     } catch (error) {
         console.error(error);
         res.status(500).render('error', { message: 'Server error occurred' });
     }
 });
+
 
 // Delete Travel Story
 router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
@@ -149,24 +160,42 @@ router.delete('/delete-story/:id', authenticateToken, async (req, res) => {
     }
 });
 
-// Fetch and render search results based on the query
+// Fetch and render search results 
 router.get('/search-results', authenticateToken, async (req, res) => {
     const { query } = req.query;
-    try {
-        // Fetch stories matching the search criteria
-        const results = await TravelStory.find({
+    const page = parseInt(req.query.page) || 1; // Get current page or default to 1
+    const limit = 9; // Number of results per page
+    const skip = (page - 1) * limit; // Calculate skip value for pagination
 
+    try {
+        // Fetch stories matching the search criteria with pagination
+        const results = await TravelStory.find({
             $or: [
                 { title: { $regex: query, $options: 'i' } },
                 { story: { $regex: query, $options: 'i' } },
                 { visitedLocation: { $regex: query, $options: 'i' } }
             ]
-        }).sort({ createdAt: -1 });
+        })
+            .sort({ createdAt: -1 })
+            .skip(skip)
+            .limit(limit);
+
+        // Get the total number of search results for calculating total pages
+        const totalStories = await TravelStory.countDocuments({
+            $or: [
+                { title: { $regex: query, $options: 'i' } },
+                { story: { $regex: query, $options: 'i' } },
+                { visitedLocation: { $regex: query, $options: 'i' } }
+            ]
+        });
+        const totalPages = Math.ceil(totalStories / limit); // Total pages calculation
 
         res.render('searchResults', {
             title: 'Search Results',
             stories: results,
-            query: query
+            query: query,
+            totalPages,
+            currentPage: page
         });
     } catch (error) {
         console.error('Error fetching search results:', error);
