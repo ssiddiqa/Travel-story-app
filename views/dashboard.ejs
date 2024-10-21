@@ -7,7 +7,18 @@
                     <p>No stories found.</p>
                     <% } else { %>
                         <% stories.forEach(story=> { %>
-                            <div class="card bg-base-100 shadow-xl">
+                            <div class="card bg-base-100 shadow-xl relative">
+                                <!-- Save/Unsave button section above the image -->
+                                <div class="absolute top-4 right-4">
+                                    <form action="/toggle-save-story/<%= story._id %>" method="POST"
+                                        style="display:inline;">
+                                        <button type="submit" class="btn p-4 border-slate-400 bg-slate-300">
+                                            <i
+                                                class="fas <%= user.savedStories.includes(story._id) ? 'fa-heart text-red-500' : 'fa-heart text-white' %>"></i>
+                                        </button>
+                                    </form>
+                                </div>
+
                                 <figure>
                                     <img src="<%= story.imageUrl %>" alt="<%= story.title %>"
                                         class="object-cover h-48 w-full">
@@ -23,12 +34,15 @@
                                         <%= story.story.substring(0, 100) %>...
                                     </p>
                                     <div class="card-actions justify-end">
+                                        <!-- Read More button -->
                                         <button class="btn btn-second"
-                                            onclick="showStory(`<%= story.title %>`, `<%= story.visitedLocation %>`, `<%= story.story %>`, `<%= story.imageUrl %>`)">Read
-                                            More</button>
+                                            onclick="showStory(`<%= story.title %>`, `<%= story.visitedLocation %>`, `<%= story.story %>`, `<%= story.imageUrl %>`)">
+                                            Read More
+                                        </button>
                                     </div>
                                 </div>
                             </div>
+
                             <% }); %>
                                 <% } %>
             </div>

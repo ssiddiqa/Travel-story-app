@@ -152,4 +152,80 @@ router.post('/logout', (req, res) => {
     res.redirect('/signin');
 });
 
+// Toggle Save/Unsave Story using a form action
+router.post('/toggle-save-story/:id', authenticateToken, async (req, res) => {
+    const { id } = req.params;
+    const { userId } = req.user;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).render('error', { message: 'User not found' });
+        }
+
+        // Check if the story is already saved
+        const isStorySaved = user.savedStories.includes(id);
+
+        if (isStorySaved) {
+            // If saved, unsave the story
+            user.savedStories = user.savedStories.filter(storyId => storyId.toString() !== id);
+        } else {
+            // If not saved, save the story
+            user.savedStories.push(id);
+        }
+
+        await user.save();
+
+        // Use the Referrer header to redirect back or default to the saved stories page
+        const redirectUrl = req.get('Referrer') || '/saved-stories';
+        res.redirect(redirectUrl);
+    } catch (error) {
+        console.error('Error toggling story save status:', error);
+        res.status(500).render('error', { message: 'Server error' });
+    }
+});
+// Get saved stories
+router.get('/saved-stories', authenticateToken, async (req, res) => {
+    const { userId } = req.user;
+
+    try {
+        const user = await User.findById(userId).populate('savedStories');
+        if (!user) {
+            return res.status(404).render('error', { message: 'User not found' });
+        }
+
+        res.render('savedStories', {
+            title: 'Saved Stories',
+            stories: user.savedStories,
+            user: user // Pass the user object to the view
+        });
+    } catch (error) {
+        console.error('Error fetching saved stories:', error);
+        res.status(500).render('error', { message: 'Server error' });
+    }
+});
+
+
+// Get saved stories
+router.get('/saved-stories', authenticateToken, async (req, res) => {
+    const { userId } = req.user;
+
+    try {
+        const user = await User.findById(userId).populate('savedStories');
+        if (!user) {
+            return res.status(404).render('error', { message: 'User not found' });
+        }
+
+        res.render('savedStories', {
+            title: 'Saved Stories',
+            stories: user.savedStories,
+            user: user // Pass the user object to the view
+        });
+    } catch (error) {
+        console.error('Error fetching saved stories:', error);
+        res.status(500).render('error', { message: 'Server error' });
+    }
+});
+
+
 module.exports = router;

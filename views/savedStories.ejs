@@ -1,0 +1,91 @@
+<div class="container mx-auto p-6 bg-white">
+    <div class="mb-4">
+        <form action="/dashboard" method="GET" style="display: inline;">
+            <button type="submit" class="btn btn-second">Dashboard</button>
+        </form>
+    </div>
+    <h2 class="text-3xl font-bold mb-6">My Saved Stories</h2>
+    <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% if (stories.length===0) { %>
+            <p>No stories found.</p>
+            <% } else { %>
+                <% stories.forEach(story=> { %>
+                    <div class="card bg-base-100 shadow-xl">
+                        <!-- Save/Unsave button section above the image -->
+                        <div class="absolute top-4 right-4">
+                            <form action="/toggle-save-story/<%= story._id %>" method="POST" style="display:inline;">
+                                <button type="submit" class="btn p-4 border-slate-400 bg-slate-300">
+                                    <i
+                                        class="fas <%= user.savedStories.some(savedStory => savedStory._id.toString() === story._id.toString()) ? 'fa-heart text-red-500' : 'fa-heart text-white' %>"></i>
+                                </button>
+                            </form>
+                        </div>
+
+                        <figure>
+                            <img src="<%= story.imageUrl %>" alt="<%= story.title %>" class="object-cover h-48 w-full">
+                        </figure>
+                        <div class="card-body">
+                            <h3 class="text-xl font-semibold">
+                                <%= story.title %>
+                            </h3>
+                            <p><strong>Location Visited:</strong>
+                                <%= story.visitedLocation %>
+                            </p>
+                            <p class="text-gray-700">
+                                <%= story.story.substring(0, 100) %>...
+                            </p>
+                            <div class="card-actions justify-end">
+                                <!-- Read More button -->
+                                <button class="btn btn-second"
+                                    onclick="showStory(`<%= story.title %>`, `<%= story.visitedLocation %>`, `<%= story.story %>`, `<%= story.imageUrl %>`)">
+                                    Read More
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <% }); %>
+                        <% } %>
+    </div>
+
+
+    <!-- Modal Structure -->
+    <dialog id="storyModal" class="modal">
+        <div class="modal-box w-full max-w-3xl">
+            <div class="modal-header flex justify-between items-center p-4 border-b">
+                <h5 class="modal-title text-lg font-bold" id="modal-title"></h5>
+                <button type="button" class="btn btn-sm btn-circle btn-red" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="border-b">
+                    <img id="modal-image" class="img-fluid rounded-lg mt-4" alt="Story Image" style="max-width: 100%;">
+                </div>
+                <div class="my-3 border-b py-3">
+                    <p><strong>Location Visited:</strong> <span id="modal-location"></span></p>
+                </div>
+                <p id="modal-story" style="white-space: pre-line;"></p>
+            </div>
+            <div class="modal-footer p-4 flex justify-end">
+                <button type="button" class="btn btn-main" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </dialog>
+</div>
+
+<script>
+    // Function to show the full story in a modal
+    function showStory(title, location, story, imageUrl) {
+        document.getElementById('modal-title').innerText = title;
+        document.getElementById('modal-location').innerText = location;
+        document.getElementById('modal-story').innerText = story;
+        document.getElementById('modal-image').src = imageUrl;
+        const modal = document.getElementById('storyModal');
+        modal.showModal(); // Show the modal
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        const modal = document.getElementById('storyModal');
+        modal.close(); // Close the modal
+    }
+</script>
