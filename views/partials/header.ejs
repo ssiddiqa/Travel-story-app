@@ -5,17 +5,28 @@
             <img src="../assets/logo-transparent-png.png" class="h-16 w-48" alt="Logo">
         </div>
 
-        <div class="flex items-center space-x-4">
+        <!-- User Initials Button for Mobile -->
+        <div class="md:hidden">
+            <button class="flex items-center justify-center w-12 h-12 rounded-full btn-main font-semibold"
+                id="mobileMenuButton" aria-haspopup="true" aria-expanded="false">
+                <span class="text-sm">
+                    <%= user.firstName.charAt(0) %>
+                        <%= user.secondName.charAt(0) %>
+                </span>
+            </button>
+        </div>
+
+        <!-- Navigation Links for Larger Screens -->
+        <div class="hidden md:flex items-center space-x-4" id="navbarMenu">
             <!-- Search Form -->
             <form action="/search-results" method="GET" class="flex items-center">
                 <input type="text" name="query" class="input input-bordered" placeholder="Search stories..." required>
                 <button type="submit" id="search-form" class="btn btn-main ml-2">Search</button>
             </form>
 
-            <!-- Dropdown for Blog Management -->
+            <!-- Dropdown Menu for Larger Screens -->
             <div class="relative">
-                <button
-                    class="flex items-center justify-center w-12 h-12 rounded-full btn-main font-semibold dropdown-toggle"
+                <button class="flex items-center justify-center w-12 h-12 rounded-full btn-main font-semibold"
                     id="dropdownButton" aria-haspopup="true" aria-expanded="false">
                     <span class="text-sm">
                         <%= user.firstName.charAt(0) %>
@@ -38,7 +49,6 @@
                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Saved
                             Stories</button>
                     </form>
-
                 </div>
             </div>
 
@@ -48,6 +58,32 @@
             </form>
         </div>
     </div>
+
+    <!-- Mobile Menu -->
+    <div class="md:hidden bg-white px-4 py-2 hidden" id="mobileMenu">
+        <form action="/search-results" method="GET" class="flex items-center mb-4">
+            <input type="text" name="query" class="input input-bordered w-full" placeholder="Search stories..."
+                required>
+            <button type="submit" id="mobile-search-form" class="btn btn-main ml-2">Search</button>
+        </form>
+        <form action="/add-blog" method="GET">
+            <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Add
+                New Blog</button>
+        </form>
+        <form action="/manage-stories" method="GET">
+            <button type="submit"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Manage My
+                Blogs</button>
+        </form>
+        <form action="/saved-stories" method="GET">
+            <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Saved
+                Stories</button>
+        </form>
+        <form action="/logout" method="POST">
+            <button type="submit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">Log
+                Out</button>
+        </form>
+    </div>
 </nav>
 
 <script>
@@ -55,8 +91,11 @@
     document.getElementById('search-form').addEventListener('submit', function () {
         this.reset();
     });
+    document.getElementById('mobile-search-form').addEventListener('submit', function () {
+        this.reset();
+    });
 
-    // Dropdown toggle functionality
+    // Dropdown toggle functionality for larger screens
     const dropdownButton = document.getElementById('dropdownButton');
     const dropdownMenu = document.getElementById('dropdownMenu');
 
@@ -68,6 +107,21 @@
     window.addEventListener('click', (event) => {
         if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
             dropdownMenu.classList.add('hidden');
+        }
+    });
+
+    // Mobile menu toggle functionality
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking outside
+    window.addEventListener('click', (event) => {
+        if (!mobileMenuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+            mobileMenu.classList.add('hidden');
         }
     });
 </script>
