@@ -69,9 +69,10 @@ The application will be running at [http://localhost:8000](http://localhost:8000
 
 
 ### 5. Demo SignIn
-- email: siddiqasayma@gmail.com
-- password: 55566121
-
+```bash
+email: siddiqasayma@gmail.com
+password: 55566121
+```
 
 ## Key Features
 
