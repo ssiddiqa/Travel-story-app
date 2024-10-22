@@ -6,6 +6,7 @@ Welcome to the Travel Blog Application! This is a web-based platform where users
 
 - **User Authentication:** Create an account, log in, and log out securely.
 - **Blog Management:** Users can add, edit, and delete their travel stories.
+- **Comments Management:** Users can add comments on stories, view comments, and delete their own comments.
 - **Save Favorite Stories:** Save and unsave favorite travel stories. The saved stories can be viewed on a separate page.
 - **Search Stories:** Search for stories based on title, location, or content.
 - **Pagination:** Paginated views for managing and viewing stories.
@@ -84,13 +85,19 @@ The application will be running at [http://localhost:8000](http://localhost:8000
 - Users can add new travel stories, edit existing ones, and delete their stories.
 - Supports image uploads using Cloudinary for storing and serving images.
 
-### 3. Save and Unsave Favorite Stories
+### 3.Comments Management
+
+- Users can add comments on any travel story.
+- Users can delete their own comments, ensuring they have control over their contributions.
+- The number of comments for each story is displayed, providing a quick overview of user engagement.
+
+### 4. Save and Unsave Favorite Stories
 
 - Users can save their favorite stories from the dashboard.
 - Saved stories are accessible on a separate "Saved Stories" page.
 - The save/unsave button dynamically updates based on the story's saved status.
 
-### 4. Search and Pagination
+### 5. Search and Pagination
 
 - Search for stories by title, location, or content.
 - Paginated views for managing and viewing stories.
