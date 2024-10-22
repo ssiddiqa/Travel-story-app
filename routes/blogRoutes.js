@@ -1,5 +1,6 @@
 const express = require("express");
 const TravelStory = require("../models/blogModel");
+const User = require("../models/userModel");
 const { authenticateToken } = require("../middleware/authenticateToken");
 const upload = require("../config/multer");
 const router = express.Router();
@@ -207,6 +208,90 @@ router.get('/search-results', authenticateToken, async (req, res) => {
         });
     }
 });
+// Route for displaying a specific story
+router.get('/story/:id', authenticateToken, async (req, res) => {
+    try {
+        const story = await TravelStory.findById(req.params.id).populate('comments');
+        if (!story) {
+            return res.status(404).send('Story not found');
+        }
+        // Pass the story and user to the template
+        res.render('story', { story, user: req.user });
+    } catch (error) {
+        console.error('Error fetching story:', error);
+        res.status(500).send('Server error');
+    }
+});
 
+// Add comment route
+router.post('/comment/:storyId', authenticateToken, async (req, res) => {
+    const { storyId } = req.params;
+    const { comment } = req.body;
+    const { userId } = req.user;// Get the authenticated user's ID
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(401).send('User not authenticated');
+        }
+
+        const story = await TravelStory.findById(storyId);
+        if (!story) {
+            return res.status(404).send('Story not found');
+        }
+
+        const username = `${user.firstName || 'Anonymous'} ${user.secondName || ''}`.trim();
+        story.comments.push({
+            userId: user._id,
+            username: username,
+            comment: comment,
+            createdAt: new Date(),
+        });
+
+        await story.save();
+        res.redirect(`/story/${storyId}`);
+    } catch (error) {
+        console.error('Error adding comment:', error);
+        res.status(500).send('Server error');
+    }
+});
+
+// Delete a comment using userId
+router.delete('/comment/:storyId', authenticateToken, async (req, res) => {
+    const { storyId } = req.params;
+    const { userId } = req.user;// Get the userId from the request body
+
+    try {
+        // Ensure the authenticated user matches the userId provided
+        if (req.user.userId.toString() !== userId.toString()) {
+            return res.status(403).json({ message: 'Unauthorized action' });
+        }
+
+        const story = await TravelStory.findById(storyId);
+        if (!story) {
+            return res.status(404).json({ message: 'Story not found' });
+        }
+
+        // Find the index of the comment made by the current user
+        const commentIndex = story.comments.findIndex((comment) => {
+            if (comment.userId) {
+                return comment.userId.toString() === userId.toString();
+            }
+            return false;
+        });
+
+        if (commentIndex === -1) {
+            return res.status(404).json({ message: 'Comment not found for this user' });
+        }
+
+        story.comments.splice(commentIndex, 1);
+        await story.save();
+
+        res.redirect(`/story/${storyId}`);
+    } catch (error) {
+        console.error('Error deleting comment:', error);
+        res.status(500).json({ message: 'Server error' });
+    }
+});
 
 module.exports = router;

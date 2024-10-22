@@ -10,7 +10,7 @@
             <p>No stories found.</p>
             <% } else { %>
                 <% stories.forEach(story=> { %>
-                    <div class="card bg-base-100 shadow-xl">
+                    <div class="card bg-base-100 shadow-xl relative">
                         <!-- Save/Unsave button section above the image -->
                         <div class="absolute top-4 right-4">
                             <form action="/toggle-save-story/<%= story._id %>" method="POST" style="display:inline;">
@@ -35,57 +35,12 @@
                                 <%= story.story.substring(0, 100) %>...
                             </p>
                             <div class="card-actions justify-end">
-                                <!-- Read More button -->
-                                <button class="btn btn-second"
-                                    onclick="showStory(`<%= story.title %>`, `<%= story.visitedLocation %>`, `<%= story.story %>`, `<%= story.imageUrl %>`)">
-                                    Read More
-                                </button>
+                                <!-- Updated Read More button to link to a new page -->
+                                <a href="/story/<%= story._id %>" class="btn btn-second">Read More</a>
                             </div>
                         </div>
                     </div>
-
                     <% }); %>
                         <% } %>
     </div>
-
-
-    <!-- Modal Structure -->
-    <dialog id="storyModal" class="modal">
-        <div class="modal-box w-full max-w-3xl">
-            <div class="modal-header flex justify-between items-center p-4 border-b">
-                <h5 class="modal-title text-lg font-bold" id="modal-title"></h5>
-                <button type="button" class="btn btn-sm btn-circle btn-red" onclick="closeModal()">&times;</button>
-            </div>
-            <div class="modal-body p-4">
-                <div class="border-b">
-                    <img id="modal-image" class="img-fluid rounded-lg mt-4" alt="Story Image" style="max-width: 100%;">
-                </div>
-                <div class="my-3 border-b py-3">
-                    <p><strong>Location Visited:</strong> <span id="modal-location"></span></p>
-                </div>
-                <p id="modal-story" style="white-space: pre-line;"></p>
-            </div>
-            <div class="modal-footer p-4 flex justify-end">
-                <button type="button" class="btn btn-main" onclick="closeModal()">Close</button>
-            </div>
-        </div>
-    </dialog>
 </div>
-
-<script>
-    // Function to show the full story in a modal
-    function showStory(title, location, story, imageUrl) {
-        document.getElementById('modal-title').innerText = title;
-        document.getElementById('modal-location').innerText = location;
-        document.getElementById('modal-story').innerText = story;
-        document.getElementById('modal-image').src = imageUrl;
-        const modal = document.getElementById('storyModal');
-        modal.showModal(); // Show the modal
-    }
-
-    // Function to close the modal
-    function closeModal() {
-        const modal = document.getElementById('storyModal');
-        modal.close(); // Close the modal
-    }
-</script>
