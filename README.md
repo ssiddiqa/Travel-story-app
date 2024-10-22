@@ -90,6 +90,10 @@ The application will be running at [http://localhost:8000](http://localhost:8000
 - Search for stories by title, location, or content.
 - Paginated views for managing and viewing stories.
 
+### 5. Demo SignIn
+- email: siddiqasayma@gmail.com
+- password: 55566121
+
 ## Contributing
 
 If you'd like to contribute to the project, follow these steps:
