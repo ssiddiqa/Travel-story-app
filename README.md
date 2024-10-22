@@ -65,6 +65,11 @@ Start the development server:
 npm start
 ```
 
+### 5. Demo SignIn
+- email: siddiqasayma@gmail.com
+- password: 55566121
+
+
 The application will be running at [http://localhost:8000](http://localhost:8000).
 
 ## Key Features
@@ -89,10 +94,6 @@ The application will be running at [http://localhost:8000](http://localhost:8000
 
 - Search for stories by title, location, or content.
 - Paginated views for managing and viewing stories.
-
-### 5. Demo SignIn
-- email: siddiqasayma@gmail.com
-- password: 55566121
 
 ## Contributing
 
